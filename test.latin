@@ -1,3 +1,4 @@
 def main(){
+    nota('Salve Mundus!')
     exire 0
 }

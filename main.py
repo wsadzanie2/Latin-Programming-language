@@ -4,7 +4,7 @@ file_output_name = input("Output file: ")
 
 def tokenize(code):
     """turns a string into a list of tokens"""
-    split_chars = ['(', ')', '{', '}', '[', ']', ',', ';', '.', '+', '-', '*', '/', ' ', '\n']
+    split_chars = ['(', ')', '{', '}', '[', ']', ',', ';', '.', '+', '-', '*', '/', ' ', "'", '"', '\n']
     list_append_value = ''
     return_list = []
     notokenchars = ['', ' ', '\n']
@@ -22,6 +22,17 @@ def tokenize(code):
     return return_list
 
 
+def deal_with_code(code):
+    with open(file_output_name, 'w') as out_file:
+        for token in tokenize(code):
+            print(token)
+            # example
+            # if token == 'def':
+            #     out_file.write('def')
+
+            # out_file.write('\n')
+
+
 with open(file_to_compile, "r", encoding='utf-8') as f:
     code = f.read()
-    print(tokenize(code))
+    deal_with_code(code)
