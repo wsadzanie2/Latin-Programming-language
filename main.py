@@ -1,9 +1,7 @@
-
 file_to_compile = input("Enter the file to compile: ")
 file_output_name = input("Output file: ")
 
-
-mode = 'default'
+mode = 'load'
 mode_value = 0
 
 
@@ -17,6 +15,7 @@ class Modes:
 
 
 modes = Modes()
+
 
 def tokenize(code):
     """turns a string into a list of tokens"""
@@ -43,10 +42,12 @@ def deal_with_code(code):
     with open(file_output_name, 'w') as out_file:
         for token in tokenize(code):
             print(token)
+            # load mode (loads the compiler and necessary things)
             if mode == 'load':
                 mode = modes.default
-                out_file.write('#include <iostream>')
+                out_file.write('#include <iostream>\n')
                 continue
+            # default mode (used for detecting commands)
             if mode == 'default':
                 if token == 'nota':
                     out_file.write('std::cout << ')
@@ -56,8 +57,11 @@ def deal_with_code(code):
                 if token == 'def':
                     mode = modes.defining
 
+                # Later it might raise an error here ;)
                 continue
+                # mode used for defining classes and functions
             if mode == modes.defining:
+
                 mode = 'default'
             if mode == 'printing':
                 if token == '"':
@@ -73,10 +77,6 @@ def deal_with_code(code):
                 else:
                     out_file.write(token)
                 continue
-
-
-
-
 
 
 with open(file_to_compile, "r", encoding='utf-8') as f:
