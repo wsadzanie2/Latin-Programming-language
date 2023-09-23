@@ -1,4 +1,4 @@
-def main(){
+def main() -> int{
     nota('Salve Mundus!')
     exire 0
 }
