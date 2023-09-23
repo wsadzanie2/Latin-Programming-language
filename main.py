@@ -28,6 +28,7 @@ class Modes:
         self.printing = 'printing'
         self.defining = 'defining'
         self.getting_type = 'getting_type'
+        self.returning = 'returning'
 
 modes = Modes()
 
@@ -69,9 +70,13 @@ def deal_with_code(code):
                     mode = 'printing'
                     mode_value = 0
                     continue
+                if token == 'exire':
+                    reset_mode_values()
+                    mode = modes.returning
                 if token == 'def':
                     reset_mode_values()
                     mode = modes.defining
+                    continue
                 if token == '}':
                     mode_spaces -= 4
                     out_file.write('\n}')
@@ -99,11 +104,11 @@ def deal_with_code(code):
                 if token == '{':
                     mode = 'default'
                     temp_string = '('
-                    for var in mode_buffer2:
+                    for var in mode_buffer2[2:]:
                         temp_string += var + ', '
                     temp_string = temp_string[:-2] + ')'
 
-                    out_file.write(f'{mode_buffer2[1]} {mode_buffer2[0]} ' + temp_string + '{' + '\n')
+                    out_file.write(f'{mode_buffer2[1]} {mode_buffer2[0]}' + temp_string + '{' + '\n')
                     mode_spaces += 4
                     continue
 
@@ -111,6 +116,12 @@ def deal_with_code(code):
                 mode_buffer2.insert(1, token)
                 mode = modes.defining
                 continue
+
+            if mode == modes.returning:
+                out_file.write('return ' + token + ';\n')
+                mode = modes.default
+                continue
+
 
             if mode == 'printing':
                 if token == '"':
