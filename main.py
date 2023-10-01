@@ -136,6 +136,8 @@ def deal_with_code(code):
                     continue
                 else:
                     out_file.write(token + ' ')
+                if token == '\n':
+                    raise Exception('You forgot a ")".')
                 continue
 
 
